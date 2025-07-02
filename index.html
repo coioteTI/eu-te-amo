@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>❤️ EU TE AMO ❤️</title>
   <style>
     * {
@@ -19,6 +19,7 @@
       width: 100vw;
       position: relative;
       color: white;
+      -webkit-tap-highlight-color: transparent; /* Remove highlight no mobile */
     }
 
     .center-text {
@@ -30,6 +31,7 @@
       text-align: center;
       z-index: 10;
       max-width: 90vw;
+      user-select: none;
     }
 
     .falling-text {
@@ -37,6 +39,7 @@
       color: pink;
       font-size: 1em;
       animation: fall linear infinite;
+      user-select: none;
     }
 
     .heart {
@@ -44,6 +47,7 @@
       color: red;
       font-size: 2em;
       animation: float 4s ease-in infinite;
+      user-select: none;
     }
 
     .rising-name {
@@ -53,6 +57,7 @@
       animation: rise 2s ease-out forwards;
       pointer-events: none;
       white-space: nowrap;
+      user-select: none;
     }
 
     @keyframes fall {
@@ -106,10 +111,14 @@
       z-index: 20;
       box-shadow: 0 0 10px #ff69b4;
       user-select: none;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, opacity 0.5s ease;
     }
     #playBtn:hover {
       background: #ff4c93;
+    }
+    #playBtn.hidden {
+      opacity: 0;
+      pointer-events: none;
     }
   </style>
 </head>
@@ -123,6 +132,7 @@
   <button id="playBtn">Toque para ouvir a música 🎵</button>
 
   <script>
+    // Funções para criar efeitos
     function createFallingText() {
       const text = document.createElement("div");
       text.classList.add("falling-text");
@@ -156,12 +166,11 @@
     setInterval(createFallingText, 200);
     setInterval(createHeart, 1000);
 
-    // Clique no desktop
+    // Eventos para mostrar o nome subindo
     document.body.addEventListener("click", (e) => {
       createRisingName(e.clientX, e.clientY);
     });
 
-    // Toque em celular
     document.body.addEventListener("touchstart", (e) => {
       Array.from(e.touches).forEach(touch => {
         createRisingName(touch.clientX, touch.clientY);
@@ -172,12 +181,32 @@
     const musica = document.getElementById("musica");
     const playBtn = document.getElementById("playBtn");
 
+    function hidePlayButton() {
+      playBtn.classList.add('hidden');
+      setTimeout(() => {
+        playBtn.style.display = 'none';
+      }, 500); // tempo do fade out
+    }
+
     playBtn.addEventListener("click", () => {
       musica.play().catch(() => {
         alert("Não foi possível tocar a música. Tente clicar novamente.");
       });
-      playBtn.style.display = "none";
+      hidePlayButton();
     });
+
+    // Também escondemos o botão se o usuário interagir em qualquer lugar (exceto no próprio botão)
+    function onUserInteraction(e) {
+      if (e.target !== playBtn && !playBtn.classList.contains('hidden')) {
+        musica.play().catch(() => {});
+        hidePlayButton();
+        // Remove os listeners após funcionar uma vez
+        document.body.removeEventListener('click', onUserInteraction);
+        document.body.removeEventListener('touchstart', onUserInteraction);
+      }
+    }
+    document.body.addEventListener('click', onUserInteraction);
+    document.body.addEventListener('touchstart', onUserInteraction);
   </script>
 </body>
 </html>
