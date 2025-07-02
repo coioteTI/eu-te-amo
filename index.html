@@ -18,6 +18,7 @@
       height: 100vh;
       width: 100vw;
       position: relative;
+      color: white;
     }
 
     .center-text {
@@ -25,7 +26,6 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      color: white;
       font-size: 6vw;
       text-align: center;
       z-index: 10;
@@ -89,13 +89,38 @@
         opacity: 0;
       }
     }
+
+    /* Botão para tocar música */
+    #playBtn {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      font-size: 1.2em;
+      background: #ff69b4;
+      border: none;
+      border-radius: 25px;
+      color: white;
+      cursor: pointer;
+      z-index: 20;
+      box-shadow: 0 0 10px #ff69b4;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    #playBtn:hover {
+      background: #ff4c93;
+    }
   </style>
 </head>
 <body>
   <div class="center-text">❤️ EU TE AMO ❤️</div>
 
-  <!-- Música de fundo -->
-  <iframe width="0" height="0" src="https://www.youtube.com/embed/u2ah9tWTkmk?autoplay=1&loop=1&playlist=u2ah9tWTkmk" frameborder="0" allow="autoplay"></iframe>
+  <!-- Áudio -->
+  <audio id="musica" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+
+  <!-- Botão para ativar o som -->
+  <button id="playBtn">Toque para ouvir a música 🎵</button>
 
   <script>
     function createFallingText() {
@@ -141,6 +166,17 @@
       Array.from(e.touches).forEach(touch => {
         createRisingName(touch.clientX, touch.clientY);
       });
+    });
+
+    // Controle do áudio e botão
+    const musica = document.getElementById("musica");
+    const playBtn = document.getElementById("playBtn");
+
+    playBtn.addEventListener("click", () => {
+      musica.play().catch(() => {
+        alert("Não foi possível tocar a música. Tente clicar novamente.");
+      });
+      playBtn.style.display = "none";
     });
   </script>
 </body>
