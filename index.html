@@ -18,7 +18,6 @@
       height: 100vh;
       width: 100vw;
       position: relative;
-      touch-action: manipulation;
     }
 
     .center-text {
@@ -30,9 +29,7 @@
       font-size: 6vw;
       text-align: center;
       z-index: 10;
-      padding: 10px;
       max-width: 90vw;
-      word-wrap: break-word;
     }
 
     .falling-text {
@@ -55,6 +52,7 @@
       font-size: 1.2em;
       animation: rise 2s ease-out forwards;
       pointer-events: none;
+      white-space: nowrap;
     }
 
     @keyframes fall {
@@ -87,7 +85,7 @@
         opacity: 1;
       }
       100% {
-        transform: translateY(-100px);
+        transform: translateY(-120px);
         opacity: 0;
       }
     }
@@ -124,8 +122,8 @@
       const name = document.createElement("div");
       name.classList.add("rising-name");
       name.textContent = "Yasmin ❤️";
-      name.style.left = x + "px";
-      name.style.top = y + "px";
+      name.style.left = `${x}px`;
+      name.style.top = `${y}px`;
       document.body.appendChild(name);
       setTimeout(() => name.remove(), 2000);
     }
@@ -133,16 +131,16 @@
     setInterval(createFallingText, 200);
     setInterval(createHeart, 1000);
 
-    // Detecta toque ou clique
+    // Clique no desktop
     document.body.addEventListener("click", (e) => {
       createRisingName(e.clientX, e.clientY);
     });
 
+    // Toque em celular
     document.body.addEventListener("touchstart", (e) => {
-      for (let i = 0; i < e.touches.length; i++) {
-        const touch = e.touches[i];
+      Array.from(e.touches).forEach(touch => {
         createRisingName(touch.clientX, touch.clientY);
-      }
+      });
     });
   </script>
 </body>
