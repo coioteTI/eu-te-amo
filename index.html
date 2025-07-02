@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>❤️ EU TE AMO ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 2.5em;
+      text-align: center;
+      z-index: 10;
+      padding: 10px;
+    }
+
+    .falling-text {
+      position: absolute;
+      color: pink;
+      font-size: 1em;
+      animation: fall linear infinite;
+    }
+
+    .heart {
+      position: absolute;
+      color: red;
+      font-size: 2em;
+      animation: float 4s ease-in infinite;
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(-100px);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes float {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="center-text">❤️ EU TE AMO ❤️</div>
+
+  <!-- Música de fundo -->
+  <iframe width="0" height="0" src="https://www.youtube.com/embed/u2ah9tWTkmk?autoplay=1&loop=1&playlist=u2ah9tWTkmk" frameborder="0" allow="autoplay"></iframe>
+
+  <script>
+    function createFallingText() {
+      const text = document.createElement("div");
+      text.classList.add("falling-text");
+      text.textContent = "EU TE AMO";
+      text.style.left = Math.random() * window.innerWidth + "px";
+      text.style.animationDuration = (Math.random() * 3 + 2) + "s";
+      document.body.appendChild(text);
+      setTimeout(() => text.remove(), 5000);
+    }
+
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "❤️";
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = Math.random() * window.innerHeight + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 4000);
+    }
+
+    setInterval(createFallingText, 200);
+    setInterval(createHeart, 1000);
+
+    document.body.addEventListener("click", () => {
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => alert("Yasmin 💘"), i * 400);
+      }
+    });
+  </script>
+</body>
+</html>
