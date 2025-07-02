@@ -5,12 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>❤️ EU TE AMO ❤️</title>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       background: black;
       overflow: hidden;
       font-family: Arial, sans-serif;
-      cursor: pointer;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      touch-action: manipulation;
     }
 
     .center-text {
@@ -19,10 +27,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
       color: white;
-      font-size: 2.5em;
+      font-size: 6vw;
       text-align: center;
       z-index: 10;
       padding: 10px;
+      max-width: 90vw;
+      word-wrap: break-word;
     }
 
     .falling-text {
@@ -37,6 +47,14 @@
       color: red;
       font-size: 2em;
       animation: float 4s ease-in infinite;
+    }
+
+    .rising-name {
+      position: absolute;
+      color: #ff69b4;
+      font-size: 1.2em;
+      animation: rise 2s ease-out forwards;
+      pointer-events: none;
     }
 
     @keyframes fall {
@@ -59,6 +77,17 @@
         transform: translateY(-20px);
       }
       100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px);
         opacity: 0;
       }
     }
@@ -91,12 +120,28 @@
       setTimeout(() => heart.remove(), 4000);
     }
 
+    function createRisingName(x, y) {
+      const name = document.createElement("div");
+      name.classList.add("rising-name");
+      name.textContent = "Yasmin ❤️";
+      name.style.left = x + "px";
+      name.style.top = y + "px";
+      document.body.appendChild(name);
+      setTimeout(() => name.remove(), 2000);
+    }
+
     setInterval(createFallingText, 200);
     setInterval(createHeart, 1000);
 
-    document.body.addEventListener("click", () => {
-      for (let i = 0; i < 3; i++) {
-        setTimeout(() => alert("Yasmin 💘"), i * 400);
+    // Detecta toque ou clique
+    document.body.addEventListener("click", (e) => {
+      createRisingName(e.clientX, e.clientY);
+    });
+
+    document.body.addEventListener("touchstart", (e) => {
+      for (let i = 0; i < e.touches.length; i++) {
+        const touch = e.touches[i];
+        createRisingName(touch.clientX, touch.clientY);
       }
     });
   </script>
