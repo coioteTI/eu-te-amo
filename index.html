@@ -1,218 +1,290 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>❤️ EU TE AMO ❤️</title>
-  <style>
-    /* Seu CSS permanece igual */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: black;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      height: 100vh;
-      width: 100vw;
-      position: relative;
-      color: white;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .center-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 6vw;
-      text-align: center;
-      z-index: 10;
-      max-width: 90vw;
-      user-select: none;
-    }
-    .falling-text {
-      position: absolute;
-      color: pink;
-      font-size: 1em;
-      animation: fall linear infinite;
-      user-select: none;
-    }
-    .heart {
-      position: absolute;
-      color: red;
-      font-size: 2em;
-      animation: float 4s ease-in infinite;
-      user-select: none;
-    }
-    .rising-name {
-      position: absolute;
-      color: #ff69b4;
-      font-size: 1.2em;
-      animation: rise 2s ease-out forwards;
-      pointer-events: none;
-      white-space: nowrap;
-      user-select: none;
-    }
-    @keyframes fall {
-      from {
-        transform: translateY(-100px);
-        opacity: 1;
-      }
-      to {
-        transform: translateY(100vh);
-        opacity: 0;
-      }
-    }
-    @keyframes float {
-      0% {
-        opacity: 0;
-      }
-      50% {
-        opacity: 1;
-        transform: translateY(-20px);
-      }
-      100% {
-        opacity: 0;
-      }
-    }
-    @keyframes rise {
-      0% {
-        transform: translateY(0);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-120px);
-        opacity: 0;
-      }
-    }
-    /* Botão para tocar música */
-    #playBtn {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 24px;
-      font-size: 1.2em;
-      background: #ff69b4;
-      border: none;
-      border-radius: 25px;
-      color: white;
-      cursor: pointer;
-      z-index: 20;
-      box-shadow: 0 0 10px #ff69b4;
-      user-select: none;
-      transition: background-color 0.3s ease, opacity 0.5s ease;
-    }
-    #playBtn:hover {
-      background: #ff4c93;
-    }
-    #playBtn.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    /* iframe invisível para o player */
-    #ytplayer {
-      position: fixed;
-      width: 0;
-      height: 0;
-      border: 0;
-      left: 0;
-      top: 0;
-      pointer-events: none;
-      opacity: 0;
-      z-index: -1;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>❤️ EU TE AMO ❤️</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  color: white;
+
+  /* FUNDO ANIMADO */
+  background: linear-gradient(-45deg, #000000, #1a001a, #330033, #000000);
+  background-size: 400% 400%;
+  animation: gradientBG 10s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* TEXTO CENTRAL COM ANIMAÇÃO */
+.content-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.center-text {
+  font-size: 5vw;
+  text-align: center;
+  animation: pulse 1.5s infinite;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  margin-bottom: 5px;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.falling-text {
+  position: absolute;
+  color: pink;
+  font-size: 1em;
+  animation: fall linear infinite;
+}
+
+.heart {
+  position: absolute;
+  color: red;
+  font-size: 2em;
+  animation: float 5s ease-in infinite;
+}
+
+.rising-name {
+  position: absolute;
+  color: #ff69b4;
+  font-size: 1.2em;
+  animation: rise 2s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes fall {
+  from {
+    transform: translateY(-100px);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  0% { opacity: 0; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-30px); }
+  100% { opacity: 0; transform: translateY(-60px); }
+}
+
+@keyframes rise {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120px); opacity: 0; }
+}
+
+/* BOTÃO */
+#playBtn {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 28px;
+  font-size: 1.2em;
+  background: linear-gradient(45deg, #ff69b4, #ff1493);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  z-index: 20;
+  box-shadow: 0 0 20px rgba(255,105,180,0.7);
+  transition: 0.3s;
+}
+
+#playBtn:hover {
+  transform: translateX(-50%) scale(1.1);
+}
+
+#playBtn.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#ytplayer {
+  position: fixed;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+
+.subtitle {
+  font-size: 2.5vw;
+  color: #ff69b4;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+  font-weight: bold;
+}
+
+.verse {
+  font-size: 1.2vw;
+  font-style: italic;
+  color: #fff;
+  background: rgba(0,0,0,0.4);
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,105,180,0.3);
+}
+
+.film-roll-container {
+  width: 250px;
+  height: 350px;
+  background: #111;
+  border-left: 20px dashed #333;
+  border-right: 20px dashed #333;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255,105,180,0.5);
+  margin-top: 10px;
+}
+
+.film-roll {
+  display: flex;
+  flex-direction: column;
+  animation: scrollDown 30s linear infinite;
+}
+
+.film-roll img {
+  width: 100%;
+  padding: 10px 5px;
+  object-fit: cover;
+  background-color: #000;
+}
+
+@keyframes scrollDown {
+  0% { transform: translateY(-50%); }
+  100% { transform: translateY(0%); }
+}
+
+@media (max-width: 768px) {
+  .subtitle { font-size: 5vw; }
+  .verse { font-size: 4vw; }
+  .film-roll-container { width: 180px; height: 280px; }
+}
+</style>
 </head>
+
 <body>
-  <div class="center-text">❤️ EU TE AMO ❤️</div>
+<div class="content-container">
+  <div class="center-text">❤️ EU TE AMO YASMIN ❤️</div>
+  <div class="subtitle">Ela é minha noivaaaaaaaaaaaaaaaaaaaaaaaaaaa 💍</div>
+  <div class="verse">
+    "Porque aonde quer que tu fores irei eu, e onde quer que pousares, ali pousarei eu; o teu povo é o meu povo, o teu Deus é o meu Deus."<br><small>- Rute 1:16</small>
+  </div>
+  <div class="film-roll-container">
+    <div class="film-roll">
+      <img src="Foto 1.png" alt="Foto 1" />
+      <img src="Foto 2.png" alt="Foto 2" />
+      <img src="Foto 3.png" alt="Foto 3" />
+      <img src="Foto 4.png" alt="Foto 4" />
+      <img src="Foto 5.png" alt="Foto 5" />
+      <img src="Foto 6.jpg" alt="Foto 6" />
+      <img src="Foto 7.jpg" alt="Foto 7" />
+      <img src="Foto 8.jpg" alt="Foto 8" />
+      <img src="Foto 1.png" alt="Foto 1" />
+      <img src="Foto 2.png" alt="Foto 2" />
+      <img src="Foto 3.png" alt="Foto 3" />
+      <img src="Foto 4.png" alt="Foto 4" />
+      <img src="Foto 5.png" alt="Foto 5" />
+      <img src="Foto 6.jpg" alt="Foto 6" />
+      <img src="Foto 7.jpg" alt="Foto 7" />
+      <img src="Foto 8.jpg" alt="Foto 8" />
+    </div>
+  </div>
+</div>
 
-  <!-- iframe do YouTube para tocar música -->
-  <iframe
-    id="ytplayer"
-    src="https://www.youtube.com/embed/u2ah9tWTkmk?autoplay=1&loop=1&playlist=u2ah9tWTkmk&controls=0&mute=0&enablejsapi=1&rel=0"
-    frameborder="0"
-    allow="autoplay"
-    allowfullscreen
-  ></iframe>
+<audio id="bgMusic" loop>
+  <source src="Música.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- Botão para ativar o som (caso autoplay seja bloqueado) -->
-  <button id="playBtn">Toque para ouvir a música 🎵</button>
+<button id="playBtn">💖 Tocar Música</button>
 
-  <script>
-    // Seus efeitos visuais:
-    function createFallingText() {
-      const text = document.createElement("div");
-      text.classList.add("falling-text");
-      text.textContent = "EU TE AMO";
-      text.style.left = Math.random() * window.innerWidth + "px";
-      text.style.animationDuration = (Math.random() * 3 + 2) + "s";
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 5000);
-    }
+<script>
+const messages = [
+  "EU TE AMO ❤️",
+  "VOCÊ É TUDO PRA MIM 💖",
+  "MINHA PRINCESA 👑",
+  "PARA SEMPRE NÓS 💑",
+  "MINHA NOIVA 💍"
+];
 
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.textContent = "❤️";
-      heart.style.left = Math.random() * window.innerWidth + "px";
-      heart.style.top = Math.random() * window.innerHeight + "px";
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 4000);
-    }
+function createFallingText() {
+  const text = document.createElement("div");
+  text.classList.add("falling-text");
+  text.textContent = messages[Math.floor(Math.random() * messages.length)];
+  text.style.left = Math.random() * window.innerWidth + "px";
+  text.style.animationDuration = (Math.random() * 3 + 2) + "s";
+  document.body.appendChild(text);
+  setTimeout(() => text.remove(), 5000);
+}
 
-    function createRisingName(x, y) {
-      const name = document.createElement("div");
-      name.classList.add("rising-name");
-      name.textContent = "Yasmin ❤️";
-      name.style.left = `${x}px`;
-      name.style.top = `${y}px`;
-      document.body.appendChild(name);
-      setTimeout(() => name.remove(), 2000);
-    }
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.textContent = "❤️";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = Math.random() * window.innerHeight + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}
 
-    setInterval(createFallingText, 200);
-    setInterval(createHeart, 1000);
+function createRisingName(x, y) {
+  const name = document.createElement("div");
+  name.classList.add("rising-name");
+  name.textContent = "Yasmin ❤️";
+  name.style.left = `${x}px`;
+  name.style.top = `${y}px`;
+  document.body.appendChild(name);
+  setTimeout(() => name.remove(), 2000);
+}
 
-    document.body.addEventListener("click", (e) => {
-      createRisingName(e.clientX, e.clientY);
-    });
+setInterval(createFallingText, 300);
+setInterval(createHeart, 800);
 
-    document.body.addEventListener("touchstart", (e) => {
-      Array.from(e.touches).forEach(touch => {
-        createRisingName(touch.clientX, touch.clientY);
-      });
-    });
+document.body.addEventListener("click", (e) => {
+  createRisingName(e.clientX, e.clientY);
+});
 
-    // Controle do botão play para caso autoplay seja bloqueado:
-    const playBtn = document.getElementById("playBtn");
-    const ytplayer = document.getElementById("ytplayer");
+const playBtn = document.getElementById("playBtn");
+const bgMusic = document.getElementById("bgMusic");
 
-    playBtn.addEventListener("click", () => {
-      // Criar uma mensagem para a API do YouTube para tocar:
-      ytplayer.contentWindow.postMessage(
-        '{"event":"command","func":"playVideo","args":""}',
-        '*'
-      );
-      playBtn.classList.add("hidden");
-    });
+playBtn.addEventListener("click", () => {
+  bgMusic.play();
+  playBtn.classList.add("hidden");
+});
+</script>
 
-    // Tenta esconder o botão se o usuário interagir na página e autoplay funcionar:
-    function onUserInteraction(e) {
-      if (!playBtn.classList.contains("hidden")) {
-        ytplayer.contentWindow.postMessage(
-          '{"event":"command","func":"playVideo","args":""}',
-          '*'
-        );
-        playBtn.classList.add("hidden");
-        document.body.removeEventListener("click", onUserInteraction);
-        document.body.removeEventListener("touchstart", onUserInteraction);
-      }
-    }
-    document.body.addEventListener("click", onUserInteraction);
-    document.body.addEventListener("touchstart", onUserInteraction);
-  </script>
 </body>
 </html>
